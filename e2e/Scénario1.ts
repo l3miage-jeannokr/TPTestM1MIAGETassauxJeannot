@@ -142,7 +142,7 @@ test.describe("Modifier une tâche est virifiée dans la liste et dans l'étape 
 
 
 
-//        4) Modifier une tâche par l'élément viede ( voir que la tâche à était supprimé aprés validation dans la liste et dans l'étape 2)
+//        4) Modifier une tâche par l'élément vide ( voir que la tâche à était supprimé aprés validation dans la liste et dans l'étape 2)
 test.describe("Modifier une tâche par l'élément vide est virifiée dans la liste et dans l'étape 2", () => {
     test('La tâche modifiée par élément vide est supprimée dans la liste principale et la liste de l Étape 2', async ({ page }) => {
         const todoListPage = new TodoListPage(page);
@@ -178,7 +178,7 @@ test.describe("Ajouter une tâche vide est vérifiée dans la liste et dans l'é
     });
 });
 
-//        6) Sélectionner un tâche 
+//        6) Sélectionner une tâche 
 test.describe("Sélectionner une tâche", () => {
     test('La tâche sélectionnée est cochée dans la liste principale et la liste de l Étape 2', async ({ page }) => {
         
@@ -199,7 +199,7 @@ test.describe("Sélectionner une tâche", () => {
 });
 
 
-//        7) Sélectionner plusieurs tâche
+//        7) Sélectionner plusieurs tâches
 
 test.describe("Sélectionner plusieurs tâches", () => {
     test('Les tâches sélectionnées sont cochées dans la liste principale et la liste de l Étape 2', async ({ page }) => {
@@ -228,7 +228,7 @@ test.describe("Sélectionner plusieurs tâches", () => {
 });
 
 
-//        8) filtré par tâche complété(avec 1 tâche sur 3 complété) 
+//        8) filtrer par tâche complétés(avec 1 tâche sur 3 complété) 
 test.describe("Filtrer par tâche complétée (1 sur 3)", () => {
     test('Filtrer affiche uniquement la tâche complétée dans la liste principale et la liste de l Étape 2', async ({ page }) => {
         const todoListPage = new TodoListPage(page);
@@ -264,7 +264,7 @@ test.describe("Filtrer par tâche complétée (1 sur 3)", () => {
     });
 });
 
-//        9) filtré par tâche complété(avec 0 tâche sur 3 complété) 
+//        9) filtrer par tâche complété(avec 0 tâche sur 3 complété) 
 
 test.describe("Filtrer par tâche complétée (0 sur 3)", () => {
     test('Filtrer affiche aucune tâche dans la liste principale et la liste de l Étape 2', async ({ page }) => {
@@ -290,7 +290,8 @@ test.describe("Filtrer par tâche complétée (0 sur 3)", () => {
         await todoListPage.expectOnlyItemInStep2List([]);
     })
 });
-//        10) filtré par tâche complété(avec 3 tâche sur 3 complété) 
+
+//        10) filtrer par tâche complété(avec 3 tâche sur 3 complété) 
 
 test.describe("Filtrer par tâche complétée (3 sur 3)", () => {
     test('Filtrer affiche toutes les tâches dans la liste principale et la liste de l Étape 2', async ({ page }) => {
@@ -330,7 +331,7 @@ test.describe("Filtrer par tâche complétée (3 sur 3)", () => {
     });
 });
 
-//        11) filtré par tâche actif (avec 1 tâche sur 3 actif) 
+//        11) filtrer par tâche active (avec 1 tâche sur 3 actif) 
 
 test.describe("Filtrer par tâche active (1 sur 3)", () => {
     test('Filtrer affiche uniquement les tâches actives dans la liste principale et la liste de l Étape 2', async ({ page }) => {
@@ -363,7 +364,7 @@ test.describe("Filtrer par tâche active (1 sur 3)", () => {
     })
 });
 
-//        12) filtré par tâche actif (avec 0 tâche sur 3 actif) 
+//        12) filtrer par tâche active (avec 0 tâche sur 3 actif) 
 test.describe("Filtrer par tâche active (0 sur 3)", () => {
     test('Filtrer affiche aucune tâche dans la liste principale et la liste de l Étape 2', async ({ page }) => {
         const todoListPage = new TodoListPage(page);
@@ -399,9 +400,7 @@ test.describe("Filtrer par tâche active (0 sur 3)", () => {
         }
     });
 });
-
-
-//        13) filtré par tâche actif (avec 3 tâche sur 3 actif) 
+//        13) filtrer par tâche active (avec 3 tâche sur 3 actif) 
 test.describe("Filtrer par tâche active (3 sur 3)", () => {
     test('Filtrer affiche toutes les tâches dans la liste principale', async ({ page }) => {
         
@@ -453,7 +452,7 @@ test.describe("Supprimer plusieurs tâches par sélection est virifiée dans la 
     })
 });
 
-//        15) Annuler retire la dernière tâche ajoutée, et Refaire la restaure
+//        15) Annuler :  retire la dernière tâche ajoutée, et Refaire la restaure
 
 test.describe("Fonctionnalité Annuler/Refaire", () => {
     
