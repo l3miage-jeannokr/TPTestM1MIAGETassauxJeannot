@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { describe, it } from 'node:test';
 import { fonctionTest } from './fonctionTest';
 
 // test initial
@@ -10,7 +9,7 @@ test('page loads successfully', async ({ page }) => {
 test.beforeEach(async ({ page }) => {
     const todoListPage = new fonctionTest(page);
     await todoListPage.goto();
-    await todoListPage.clearAllItems(); // Méthode pour supprimer toutes les tâches
+    await todoListPage.clearAllItems();
 });
 // Test A
 test.describe("Scénario nominal 3add", () => {
@@ -23,14 +22,12 @@ test.describe("Scénario nominal 3add", () => {
 
         await todoListPage.footerDisplay(false);
 
-        // Ajouter la première tâche
         await todoListPage.addItem("révision P&C");
         await todoListPage.footerDisplay(true);
         await todoListPage.displayListeIs([
             { checked: false, label: "révision P&C" }
         ]);
 
-        // Ajouter la deuxième tâche
         await todoListPage.addItem("révision Système");
         await todoListPage.footerDisplay(true);
         await todoListPage.displayListeIs([
@@ -240,26 +237,20 @@ test.describe("Filtrer par tâche complétée (1 sur 3)", () => {
 
         await todoListPage.goto();
 
-        // Ajouter les tâches
         for (const name of itemNames) {
             await todoListPage.addItem(name);
             await todoListPage.expectItemInMainList(name);
             await todoListPage.expectItemInStep2List(name);
         }
 
-        // Compléter la première tâche
         await todoListPage.checkItem(itemNames[0]);
 
-        // Vérifier que la tâche est bien marquée comme complétée
         await todoListPage.expectItemCheckedInMainList(itemNames[0]);
 
-        // Appliquer le filtre "Complétée"
         await todoListPage.filterCompletedItem();
 
-        // Vérifier que seule la tâche complétée est visible dans la liste principale
         await todoListPage.expectOnlyItemInMainList([itemNames[0]]);
 
-        // Vérifier que seule la tâche complétée est visible dans la liste de l'étape 2
         await todoListPage.expectOnlyItemInStep2List([itemNames[0]]);
     });
 });
@@ -305,28 +296,21 @@ test.describe("Filtrer par tâche complétée (3 sur 3)", () => {
 
         await todoListPage.goto();
 
-        // Ajouter les tâches
         for (const name of itemNames) {
             await todoListPage.addItem(name);
             await todoListPage.expectItemInMainList(name);
             await todoListPage.expectItemInStep2List(name);
         }
 
-        // Compléter toutes les tâches
         for (const name of itemNames) {
             await todoListPage.checkItem(name);
-
-            // Vérifier que chaque tâche est bien marquée comme complétée
             await todoListPage.expectItemCheckedInMainList(name);
         }
 
-        // Appliquer le filtre "Complétée"
         await todoListPage.filterCompletedItem();
 
-        // Vérifier que toutes les tâches complétées sont visibles dans la liste principale
         await todoListPage.expectOnlyItemInMainList(itemNames);
 
-        // Vérifier que toutes les tâches complétées sont visibles dans la liste de l'étape 2
         await todoListPage.expectOnlyItemInStep2List(itemNames);
     });
 });
@@ -372,26 +356,21 @@ test.describe("Filtrer par tâche active (0 sur 3)", () => {
 
         await todoListPage.goto();
 
-        // Ajouter les tâches et vérifier leur présence
         for (const name of itemNames) {
             await todoListPage.addItem(name);
             await todoListPage.expectItemInMainList(name);
             await todoListPage.expectItemInStep2List(name);
         }
 
-        // Marquer toutes les tâches comme complétées
         for (const name of itemNames) {
             await todoListPage.checkItem(name);
         }
 
-        // Appliquer le filtre des tâches actives
         await todoListPage.filterActiveItem();
 
-        // Vérifier qu'aucune tâche n'est visible
         await todoListPage.expectOnlyItemInMainList([]);
         await todoListPage.expectOnlyItemInStep2List([]);
 
-        // Vérification supplémentaire : les tâches complétées ne doivent pas être visibles
         for (const name of itemNames) {
             await todoListPage.expectItemNotInMainList(name);
             await todoListPage.expectItemNotInStep2List(name);
