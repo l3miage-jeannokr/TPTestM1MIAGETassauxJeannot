@@ -1,8 +1,12 @@
-import { Evenement } from './EvenementType';
 import { Page, expect } from '@playwright/test';
-import { AbstractPageTest } from './AbstractPageTest';
+import { fonctionTestSpecif } from './fonctionTestSpecif';
 
-export class fonctionTest extends AbstractPageTest {
+export type Evenement = {
+    checked: boolean;
+    label: string;
+}
+
+export class fonctionTest extends fonctionTestSpecif {
     constructor(page: Page) {
         super(page);
     }
@@ -26,19 +30,16 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Navigate to the todo list page */
     async goto(): Promise<void> {
         await this.page.goto('/l3m-2023-2024-angular-todolist', { waitUntil: 'networkidle' });
         await this.page.waitForSelector('input.new-todo', { timeout: 15000 });
     }
 
-    /** Check if the displayed list is empty */
     async displayListeEmpty(): Promise<void> {
         const items = await this.page.locator('ul.todo-list li').count();
         expect(items).toBe(0);
     }
 
-    /** Verify if footer is displayed or not */
     async footerDisplay(isDisplayed: boolean): Promise<void> {
         const footer = this.page.locator('footer.footer');
         if (isDisplayed) {
@@ -61,7 +62,6 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Verify the displayed list matches the expected events */
     async displayListeIs(events: Evenement[]): Promise<void> {
         const items = this.page.locator('ul.todo-list li');
         await expect(items).toHaveCount(events.length);
@@ -81,34 +81,29 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Expect item to be visible in the main list (Étape 1) */
     async expectItemInMainList(item: string): Promise<void> {
         const mainList = this.page.locator('ul.todo-list');
         const itemElement = mainList.locator(`li:has-text("${item}")`);
         await expect(itemElement).toBeVisible();
     }
 
-    /** Expect item to NOT be visible in the main list */
     async expectItemNotInMainList(item: string): Promise<void> {
         const mainList = this.page.locator('section').first().locator(`text="${item}"`);
         await expect(mainList).not.toBeVisible();
     }
 
-    /** Expect item to be visible in the Step 2 list (Étape 2) */
     async expectItemInStep2List(item: string): Promise<void> {
         const step2Section = this.page.locator('section').nth(1);
         const itemInStep2 = step2Section.locator(`li:has-text("${item}")`);
         await expect(itemInStep2).toBeVisible();
     }
 
-    /** Expect item to NOT be visible in the Step 2 list */
     async expectItemNotInStep2List(item: string): Promise<void> {
         const step2Section = this.page.locator('section').nth(1);
         const itemInStep2 = step2Section.locator(`li:has-text("${item}")`);
         await expect(itemInStep2).not.toBeVisible();
     }
 
-    /** Delete an item from the todo list */
     async deleteItem(item: string): Promise<void> {
         const itemElement = this.page.locator(`li:has-text("${item}")`).first();
         await itemElement.hover();
@@ -119,7 +114,6 @@ export class fonctionTest extends AbstractPageTest {
         await this.page.waitForSelector(`li:has-text("${item}")`, { state: 'detached' });
     }
 
-    /** Edit an existing item with a new value */
     async editItem(oldItem: string, newItem: string): Promise<void> {
         const itemElement = this.page.locator(`li:has-text("${oldItem}")`).first();
         const label = itemElement.locator('label');
@@ -146,7 +140,6 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Check/complete an item in the todo list */
     async checkItem(item: string): Promise<void> {
         const itemElement = this.page.locator(`li:has-text("${item}")`).first();
         const checkbox = itemElement.locator('input[type="checkbox"]');
@@ -155,7 +148,6 @@ export class fonctionTest extends AbstractPageTest {
         await this.page.waitForSelector(`li:has-text("${item}") input[type="checkbox"]:checked`);
     }
 
-    /** Expect item to be checked in the main list */
     async expectItemCheckedInMainList(item: string): Promise<void> {
         const mainList = this.page.locator('section');
         const itemElement = mainList.locator(`li:has-text("${item}")`);
@@ -163,7 +155,6 @@ export class fonctionTest extends AbstractPageTest {
         await expect(checkbox).toBeChecked();
     }
 
-    /** Expect item to be checked in the Step 2 list */
     async expectItemCheckedInStep2List(item: string): Promise<void> {
         const step2Section = this.page.locator('section').nth(1);
         const itemElement = step2Section.locator(`li:has-text("${item}")`);
@@ -171,7 +162,6 @@ export class fonctionTest extends AbstractPageTest {
         await expect(checkbox).toBeChecked();
     }
 
-    /** Filter to show only completed items */
     async filterCompletedItem(): Promise<void> {
         const completedFilter = this.page.locator('ul.filters a.filterCompleted');
         await completedFilter.waitFor({ state: 'visible' });
@@ -180,7 +170,6 @@ export class fonctionTest extends AbstractPageTest {
         await this.page.waitForTimeout(500);
     }
 
-    /** Expect only specific items to be visible in the main list */
     async expectOnlyItemInMainList(items: string[]): Promise<void> {
         const mainList = this.page.locator('section').first();
         const visibleItems = mainList.locator('ul.todo-list > li:visible');
@@ -197,7 +186,6 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Expect only specific items to be visible in the Step 2 list */
     async expectOnlyItemInStep2List(items: string[]): Promise<void> {
         const step2Section = this.page.locator('section').nth(1);
         const visibleItems = step2Section.locator('ul li:visible');
@@ -214,7 +202,6 @@ export class fonctionTest extends AbstractPageTest {
         }
     }
 
-    /** Filter to show only active items */
     async filterActiveItem(): Promise<void> {
         const activeFilter = this.page.locator('ul.filters a.filterActives');
         await activeFilter.waitFor({ state: 'visible' });
@@ -223,7 +210,6 @@ export class fonctionTest extends AbstractPageTest {
         await this.page.waitForTimeout(500);
     }
 
-    /** Click the Undo button */
     async clickUndo(): Promise<void> {
         const undoButton = this.page.locator('button:has-text("Annuler")').first();
         await undoButton.click();
@@ -231,7 +217,6 @@ export class fonctionTest extends AbstractPageTest {
         await this.page.waitForTimeout(300);
     }
 
-    /** Click the Redo button */
     async clickRedo(): Promise<void> {
         const redoButton = this.page.locator('button:has-text("Refaire")').first();
         await redoButton.click();
