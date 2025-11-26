@@ -1,4 +1,4 @@
-type Evenement = {
+export type Evenement = {
     checked : boolean;
     label : string;
 }
